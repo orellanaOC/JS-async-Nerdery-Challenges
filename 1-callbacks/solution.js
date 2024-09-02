@@ -34,31 +34,50 @@ node solution.js name1 name2 name3
 
 const validateUser = require('./validate-user');
 
-function solution() {
+let success = [];
+let failure = [];
+// you get your 5 names here
+const names = [
+	'John',
+	'Barlowe',
+	'Caddel',
+	'Hart',
+	'Katz',
+	'Laurier',
+	'Mary',
+];
+
+function solution(addUser) {
 	// YOUR SOLUTION GOES HERE
-
-	// you get your 5 names here
-	const names = [
-		'Barlowe',
-		'John',
-		'Mary',
-		'Caddel',
-		'Hart',
-		'Katz',
-		'Laurier',
-	];
-
 	// iterate the names array and validate them with the method
-	names.forEach((name) => {
-		validateUser(name, (error, person) => {
+	for (let index = 0; index < names.length; index++) {
+		const element = names[index];
+
+		validateUser(element, (error, person) => {
 			// log the final result
 			if (typeof person === 'undefined') {
-				console.log(error.message);
+				failure.push(error.message)
 			} else {
-				console.log(person);
+				addUser(person, index)
 			}
 		});
-	});
+	}
 }
 
-solution();
+function add(person, index) {
+	success.push(person)
+
+	if (index == (names.length - 1)) {
+		printResult();
+	}
+}
+
+function printResult() {
+	console.log("Success");
+	success.forEach(element => console.log(`ID: ${element.id}, Name: ${element.name}`));
+
+	console.log("Failure");
+	failure.forEach(element => console.log(element));
+}
+
+solution(add);
